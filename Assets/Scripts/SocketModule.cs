@@ -80,7 +80,7 @@ public class SocketModule : MonoBehaviour
         }
     }
 
-    private void SendData()
+    private void SendData(string str)
     {
         if (isRunning && serverStream != null)
         {
