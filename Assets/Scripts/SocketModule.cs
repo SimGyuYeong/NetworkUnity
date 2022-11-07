@@ -13,6 +13,7 @@ public class SocketModule : MonoBehaviour
     private TcpClient clientSocket;
     private NetworkStream serverStream = default(NetworkStream);
     private string nickName;
+    private GameManager gm;
 
     bool isRunning = false;
 
@@ -28,6 +29,7 @@ public class SocketModule : MonoBehaviour
             instance = this;
         }
         else Destroy(gameObject);
+        gm = GetComponent<GameManager>();
     }
 
     public void Login(string id)
@@ -70,6 +72,7 @@ public class SocketModule : MonoBehaviour
                         returnData += Encoding.UTF8.GetString(inStream, 0, numBytesRead);
 
                     }
+                    gm.QueueCommand(returnData);
                     Debug.Log(returnData);
                 }
             }
@@ -80,7 +83,7 @@ public class SocketModule : MonoBehaviour
         }
     }
 
-    private void SendData(string str)
+    public void SendData(string str)
     {
         if (isRunning && serverStream != null)
         {
