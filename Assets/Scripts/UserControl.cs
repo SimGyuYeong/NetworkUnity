@@ -13,8 +13,10 @@ public class UserControl : MonoBehaviour
     private float _spd = 5.0f;
 
     private Vector3 _currentPos;
-    private Vector3 _targetPos;
+    public Vector3 targetPos;
     private float _currentHp;
+
+    private GameManager gm;
     public float HP
     {
         get => _currentHp;
@@ -22,6 +24,11 @@ public class UserControl : MonoBehaviour
     }
 
     private Coroutine _moveCoroutine = null;
+
+    private void Awake()
+    {
+        gm = FindObjectOfType<GameManager>();
+    }
 
     private void Update()
     {
@@ -32,13 +39,15 @@ public class UserControl : MonoBehaviour
                 Vector3 targetPos;
                 targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 targetPos.z = 0f;
-                _targetPos = targetPos;
+                this.targetPos = targetPos;
 
                 if (_moveCoroutine != null)
                     StopCoroutine(_moveCoroutine);
                 _moveCoroutine = StartCoroutine(MoveCoroutine());
             }
         }
+
+        
         //SetTargetPos(_targetPos);
     }
 
@@ -47,20 +56,26 @@ public class UserControl : MonoBehaviour
         float delta = 0f;
         while(delta <= 1f)
         {
-            transform.position += ((_targetPos - transform.position) * delta);
+            transform.position += ((targetPos - transform.position) * delta);
             delta += Time.deltaTime;
             yield return null;
         }
-        transform.position = _targetPos;
+        transform.position = targetPos;
     }
 
     private void SetTargetPos(Vector3 pos)
     {
-        transform.position = Vector3.MoveTowards(transform.position, _targetPos, Time.deltaTime * _spd);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * _spd);
+        gm.SendCommand("#Move#" + targetPos.x + ',' + targetPos.y);   
     }
 
-    private void Revive()
+    public void Revive()
     {
         HP = MAX_HP;
+    }
+
+    public void DropHp(int drop)
+    {
+        _currentHp -= drop;
     }
 }

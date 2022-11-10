@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        userControl = GetComponent<UserControl>();
+        userControl = FindObjectOfType<UserControl>();
 
         remoteUsers = new Dictionary<string, UserControl>();
         commandQueue = new Queue<string>();
@@ -33,7 +33,13 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-
+        if (Input.GetMouseButton(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                SendCommand("#Attack#");
+            }
+        }
     }
 
     public void SendCommand(string cmd)
@@ -100,21 +106,23 @@ public class GameManager : MonoBehaviour
                         switch (command)
                         {
                             case "Enter":
+                                AddUser(id);
                                 break;
 
                             case "Move":
+                                SetMove(id, remain);
                                 break;
 
                             case "Left":
+                                UserLeft(id);
                                 break;
 
                             case "Heal":
-                                break;
-
-                            case "Attack":
+                                UserHeal(id);
                                 break;
 
                             case "Damage":
+                                TakeDamage(remain);
                                 break;
 
                             default:
@@ -135,6 +143,95 @@ public class GameManager : MonoBehaviour
             {
                 isMore = false;
             }
+        }
+    }
+
+    public void OnLogin()
+    {
+        myID = nickName.text;
+        if(myID.Length > 0)
+        {
+            SocketModule.GetInstance().Login(myID);
+            User.transform.position = Vector3.zero;
+        }
+    }
+
+    public void OnLogOut()
+    {
+        SocketModule.GetInstance().Logout();
+        foreach(var user in remoteUsers)
+        {
+            Destroy(user.Value.gameObject);
+        }
+        remoteUsers.Clear();
+    }
+
+    public void OnRevive()
+    {
+        userControl.Revive();
+        SendCommand("#Heal#");
+        
+    }
+
+    public void OnMessage()
+    {
+        SocketModule.GetInstance().SendData(Chat.text);
+    }
+
+    public void AddUser(string id)
+    {
+        UserControl uc = null;
+        if(!remoteUsers.ContainsKey(id))
+        {
+            GameObject newUser = Instantiate(prefabUser);
+            uc = newUser.GetComponent<UserControl>();
+            remoteUsers.Add(id, uc);
+        }
+    }
+
+    public void UserLeft(string id)
+    {
+        if(remoteUsers.ContainsKey(id))
+        {
+            UserControl uc = remoteUsers[id];
+            Destroy(uc.gameObject);
+            remoteUsers.Remove(id);
+        }
+    }
+
+    public void UserHeal(string id)
+    {
+        if(remoteUsers.ContainsKey(id))
+        {
+            UserControl uc = remoteUsers[id];
+            uc.Revive();
+        }
+    }
+
+    public void TakeDamage(string remain)
+    {
+        var strs = remain.Split(',');
+        for(int i = 0; i < strs.Length; i++)
+        {
+            if (remoteUsers.ContainsKey(strs[i]))
+            {
+                UserControl uc = remoteUsers[strs[i]];
+                if(uc != null)
+                {
+                    uc.DropHp(10);
+                }
+            }
+        }
+    }
+
+    public void SetMove(string id, string cmdMove)
+    {
+        if(remoteUsers.ContainsKey(id))
+        {
+            UserControl uc = remoteUsers[id];
+            string[] strs = cmdMove.Split(',');
+            Vector3 pos = new Vector3(float.Parse(strs[0]), float.Parse(strs[1]), 0);
+            uc.targetPos = pos;
         }
     }
 }

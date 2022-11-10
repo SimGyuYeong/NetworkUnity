@@ -29,7 +29,7 @@ public class SocketModule : MonoBehaviour
             instance = this;
         }
         else Destroy(gameObject);
-        gm = GetComponent<GameManager>();
+        gm = FindObjectOfType<GameManager>();
     }
 
     public void Login(string id)
@@ -98,7 +98,7 @@ public class SocketModule : MonoBehaviour
         isRunning = false;
     }
 
-    private void Logout()
+    public void Logout()
     {
         if(isRunning)
         {
