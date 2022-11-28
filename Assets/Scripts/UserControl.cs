@@ -44,11 +44,11 @@ public class UserControl : MonoBehaviour
                 if (_moveCoroutine != null)
                     StopCoroutine(_moveCoroutine);
                 _moveCoroutine = StartCoroutine(MoveCoroutine());
+                gm.SendCommand("#Move#" + targetPos.x + ',' + targetPos.y);
             }
         }
 
         
-        //SetTargetPos(_targetPos);
     }
 
     private IEnumerator MoveCoroutine()
@@ -66,7 +66,6 @@ public class UserControl : MonoBehaviour
     private void SetTargetPos(Vector3 pos)
     {
         transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * _spd);
-        gm.SendCommand("#Move#" + targetPos.x + ',' + targetPos.y);   
     }
 
     public void Revive()

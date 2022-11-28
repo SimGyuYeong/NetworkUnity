@@ -583,6 +583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f8e441c9fa5e144a8ef8995c36237bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nickName: {fileID: 1334031871}
+  Chat: {fileID: 657545424}
+  User: {fileID: 1838509794}
 --- !u!114 &512636939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2067,7 +2070,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1100712496}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512636938}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnLogin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1100712496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2189,7 +2204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1167414921}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512636938}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnLogOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1167414921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2555,7 +2582,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1732492605}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512636938}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnMessage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1732492605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2692,6 +2731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e88dbbe1c4b414387039a72e026cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1845358256
 GameObject:
   m_ObjectHideFlags: 0
